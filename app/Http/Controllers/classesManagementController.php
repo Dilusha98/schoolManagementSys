@@ -88,6 +88,82 @@ class classesManagementController extends Controller
     
     }
 
+    public function viewClassListTeacher(){
+        $classList = DB::table('studentclass')->select('*')->get();
+        $teacherView = DB::table('user_managments')
+        ->select('userFirstName', 'userLastName')
+        ->where('role', 2)
+        ->get();
+
+
+        $classlist=[];
+        // $teacherView=[];
+
+        foreach ($classList as $classes) {
+            if ($classes->stream == 0) {
+                $stream = 'Not an AL student';
+            } elseif ($classes->stream == 1) {
+                $stream = 'Science';
+            } elseif ($classes->stream == 2) {
+                $stream = 'Commerce';
+            } elseif ($classes->stream == 3) {
+                $stream = 'Art';
+            } elseif ($classes->stream == 4) {
+                $stream = 'Tech';
+            } else {
+                $stream = 'Unknown';
+            }
+
+
+            if ($classes->medium == 0) {
+                $medium = 'Medium is not selected';
+            } elseif ($classes->medium == 1) {
+                $medium = 'Sinhala';
+            } elseif ($classes->medium == 2) {
+                $medium = 'English';
+            } elseif ($classes->medium == 3) {
+                $medium = 'Tamil';
+            }  else {
+                $medium = 'Unknown';
+            }
+
+            if ($classes->class == 0) {
+                $class = 'class is not selected';
+            } elseif ($classes->class == 1) {
+                $class = 'A';
+            } elseif ($classes->class == 2) {
+                $class = 'B';
+            } elseif ($classes->class == 3) {
+                $class = 'C';
+            } elseif ($classes->class == 4) {
+                $class = 'D';
+            }  else {
+                $class = 'Unknown';
+            }
+
+
+            $classlist[] =[
+                'id' => $classes->id,
+                'grade' => $classes -> grade,
+                'class' => $class,
+                'medium' => $medium,
+                'stream' => $stream,
+            ];
+
+            // foreach($teacherView as $teacher){
+            //     $teacherView[] =[
+            //         'userFirstName' => $teacher -> userFirstName,
+            //         'userLastName' => $teacher -> userLastName,
+    
+            //     ];
+            // }
+
+
+        }
+        return response()->json(['classList' => $classlist,'teacherView' => $teacherView]);
+
+    }
+
 
     public function deleteClass($id){
 
@@ -95,5 +171,11 @@ class classesManagementController extends Controller
 
         return response()->json(['success' => 'Class deleted']);
 
+    }
+
+    public function viewClasssListToEdit($id){
+        $viewDetailsToEdit = DB::table('studentclass')->select('*')->where('id',$id)->get();
+
+        return response()->json(['classListToEdit' => $viewDetailsToEdit]);
     }
 }
