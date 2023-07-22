@@ -227,6 +227,40 @@
             </div>
         </div>
     </div>
+    {{-- asssign Student modl --}}
+    <div class="modal fade" id="AssignStudentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Assign Student</h5>
+                    <button type="button"class="btn-close"data-bs-dismiss="modal"aria-label="Close"></button>
+                </div>
+                <div class="container">
+                    <div class="alert alert-danger d-none" id="dangeralert2" role="alert" style="z-index: 9999999"></div>
+                    <div class="alert alert-success d-none" id="successalert2" role="alert" style="z-index: 99999999"></div>
+                </div>
+                <div class="container">
+                    <hr>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="stID" hidden>
+                    <input type="text" id="CurrentClassID" hidden>
+                    <h2>Current Class : <span id="ClsName"></span></h2>
+                    <div id="displayClass"></div>
+                    <label for="selectClass">Select a Class</label>
+                    <select name="selectClass" id="selectClass" class="form-control">
+                    </select>
+                </div>
+                <div class="container">
+                    <hr>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="studentAssignToClass" class="btn btn-primary">Save</button>
+                    <button type="button" id="updateAssignToClass" class="btn btn-primary d-none">Change</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -635,6 +669,7 @@
                                 '</td>\
                                 <td><button class="btn btn-outline-info" id="EditStudent" value="' +item.id +'">Edit</button>\
                                 <button class="btn btn-outline-danger" id="DeleteStudent" value="' +item.id + '">Delete</button>\
+                                <button class="btn btn-outline-success" id="studentAsgClsModal" value="' +item.id + '">Assign</button>\
                                 </td>\
                                 </tr>');
                         });
@@ -856,6 +891,168 @@
                         }
                     });
                 });
+            });
+
+            $(document).on('click','#studentAsgClsModal',function (e) {
+                e.preventDefault();
+
+                let id = $(this).val();
+                $('#stID').val(id);
+
+                $('#AssignStudentModal').modal('show');
+                getClassesList();
+                viewCurrentClass()
+            });
+
+            function getClassesList() {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    type: "get",
+                    url: "/getClassesList",
+                    success: function (res) {
+                        console.log(res);
+                        $('#selectClass').html('');
+                        $('#selectClass').append('<option value="0">-Select a class-</option>');
+                        $.each(res.classList, function (key, item) {
+                            if (item.stream == 0) {
+                                $('#selectClass').append('\
+                                    <option value="'+ item.id +'">'+item.grade+''+item.class+' - '+ (item.medium) +'</option>\
+                                '); 
+                            } else {
+                                $('#selectClass').append('\
+                                    <option value="'+ item.id +'">'+item.grade+''+item.class+' - '+ item.stream+' '+ (item.medium) +'</option>\
+                                '); 
+                            }
+                        });
+                    }
+                });
+            }
+
+
+
+            $(document).on('click', '#studentAssignToClass' ,function (e) {
+                e.preventDefault();
+
+                let stID = $('#stID').val();
+                let classsID = $('#selectClass').val();
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    type: "post",
+                    url: "/StudentAssignToClass/"+stID+'/'+classsID,
+                    success: function (res) {
+                        console.log(res);
+                        if (res.success) {
+                            $('.alert-success').removeClass('d-none');
+                            $('.alert-success').text(res.success);
+                            setTimeout(function() {
+                                $('.alert-success').addClass('d-none');
+                        }, 5000);
+                            $('#AssignStudentModal').modal('hide');
+                            $('#selectClass').val('0'); 
+                            window.scrollTo(0, 0); 
+                        } else {
+                            $('.dangeralert2').removeClass('d-none');
+                            $('.dangeralert2').text(res.error);
+                            setTimeout(function() {
+                                $('.dangeralert2').addClass('d-none');
+                            }, 5000); 
+                        }
+                    }
+                });
+            });
+
+            function viewCurrentClass() {
+                let stID = $('#stID').val();
+
+                $.ajax({
+                    type: "get",
+                    url: "/getCurrentClass/"+stID,
+                    success: function (res) {
+                        console.log(res);
+                        var resp = res.CurrentClass[0];
+                        if (res.CurrentClass.length == 0) {
+                            $('#ClsName').text('Not assigned');
+                            $('#CurrentClassID').val('0');
+                            $('#updateAssignToClass').addClass('d-none');
+                            $('#studentAssignToClass').removeClass('d-none');
+                        } else {
+                            if (resp.stream == 0) {
+                                $('#ClsName').text(resp.grade + resp.class + '-' + resp.medium);
+                                $('#CurrentClassID').val(resp.id);
+                                $('#updateAssignToClass').removeClass('d-none');
+                                $('#studentAssignToClass').addClass('d-none');
+                            } else {
+                                $('#ClsName').text(resp.grade + resp.class + '-' + resp.stream + '('+resp.medium+ ')');
+                                $('#CurrentClassID').val(resp.id); 
+                                $('#updateAssignToClass').removeClass('d-none');
+                                $('#studentAssignToClass').addClass('d-none');
+                            }
+
+                        }
+                    }
+                });
+            }
+
+            $(document).on('click','#updateAssignToClass',function (e) {
+                e.preventDefault();
+
+                let stID = $('#stID').val();
+                let classsID = $('#selectClass').val();
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Do you want to change the class!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, change it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                $.ajax({
+                    type: "post",
+                    url: "/StudentAssignToClass/"+stID+'/'+classsID,
+                    success: function (res) {
+                        console.log(res);
+                        if (res.success) {
+                            $('.alert-success').removeClass('d-none');
+                            $('.alert-success').text(res.success);
+                            setTimeout(function() {
+                                $('.alert-success').addClass('d-none');
+                        }, 5000);
+                            $('#AssignStudentModal').modal('hide');
+                            $('#selectClass').val('0'); 
+                            window.scrollTo(0, 0); 
+                        } else {
+                            $('.dangeralert2').removeClass('d-none');
+                            $('.dangeralert2').text(res.error);
+                            setTimeout(function() {
+                                $('.dangeralert2').addClass('d-none');
+                            }, 5000); 
+                        }
+                    }
+                });
+            }
+        })
+
             });
 
         });

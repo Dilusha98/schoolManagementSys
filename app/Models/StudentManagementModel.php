@@ -24,5 +24,6 @@ class StudentManagementModel extends Model
         'guardianAddress',
         'guardianPostalCode',
         'guardianOccupation',
+        'classID',
     ];
 }

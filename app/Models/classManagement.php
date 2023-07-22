@@ -14,5 +14,6 @@ class classManagement extends Model
         'stream',
         'class',
         'medium',
+        'teacher',
     ];
 }

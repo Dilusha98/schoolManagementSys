@@ -41,6 +41,13 @@ Route::delete('/deleteStudents/{id}',[StudentManagementModelController::class,'D
 Route::get('/getToEditStudent/{id}',[StudentManagementModelController::class,'GetToEditStudent']);
 // Save Edited student Details
 Route::put('/SaveEditedstudentDetails/{id}',[StudentManagementModelController::class,'SaveEditedstudentDetails']);
+//assign to a class
+Route::post('/StudentAssignToClass/{stID}/{classsID}',[StudentManagementModelController::class,'StudentAssignToClasses']);
+//select classes list
+Route::get('/getClassesList',[StudentManagementModelController::class,'GetClassesList']);
+//get current Class
+Route::get('/getCurrentClass/{stID}',[StudentManagementModelController::class,'GetCurrentClass']);
+
 
 
 //Mange Classes
@@ -48,6 +55,12 @@ Route::get('/ClassesManagement',[classesManagementController::class,'index'])->n
 Route::post('/saveClasses',[classesManagementController::class,'saveClass']);
 Route::get('/viewClassList',[classesManagementController::class,'viewClass']);
 Route::delete('/deleteClass/{id}',[classesManagementController::class,'deleteClass']);
+Route::delete('/viewClassListTeacher',[classesManagementController::class,'viewClassListTeacher']);
+Route::get('/getTeachersList',[classesManagementController::class,'GetTeachersList']);
+Route::put('/assignTeacher/{classID}',[classesManagementController::class,'AssignTeacher']);
+Route::get('/getCurrentTeacher/{id}',[classesManagementController::class,'GetCurrentTeacher']);
+Route::get('/assignedOrNot/{selected}',[classesManagementController::class,'AssignedOrNot']);
+Route::put('/removeClassTeacher/{classID}',[classesManagementController::class,'RemoveClassTeacher']);
 
 
 

@@ -96,4 +96,33 @@ class StudentManagementModelController extends Controller
             'success' => 'Student Details Updated Successfully!'
         ]);
     }
+
+    public function GetClassesList()
+    {
+        $classList = DB::table('studentclass')
+        ->select('*')
+        ->get();
+
+        return response()->json(['classList'=> $classList]);
+    }
+
+    public function StudentAssignToClasses($stID,$classsID)
+    {
+        StudentManagementModel::where([
+            ['id',$stID],
+        ])->update([
+            'classID'=>$classsID,
+        ]);
+        return response()->json(['success'=>'Successfully assigned!']);
+    }
+
+    public function GetCurrentClass($stID)
+    {
+        $curentClass = DB::table('student_management_models')
+        ->select('*')
+        ->join('studentclass','studentclass.id', '=' , 'student_management_models.classID')
+        ->where('student_management_models.id',$stID)
+        ->get();
+        return response()->json(['CurrentClass'=>$curentClass]);
+    }
 }
