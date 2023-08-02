@@ -77,11 +77,11 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="./ui-forms.html" aria-expanded="false">
+                            <a class="sidebar-link" href="/subject" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-file-description"></i>
                                 </span>
-                                <span class="hide-menu">Forms</span>
+                                <span class="hide-menu">Subjects</span>
                             </a>
                         </li>
                         <li class="sidebar-item">

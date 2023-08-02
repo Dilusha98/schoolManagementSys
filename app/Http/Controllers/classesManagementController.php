@@ -26,6 +26,7 @@ class classesManagementController extends Controller
                 'stream' => $data['stream'],
                 'class' => $data['class'],
                 'medium' => $data['medium'],
+                'teacher' => '0',
             ]);
         }
         return response()->json(['success' => 'User Added Successfully']);

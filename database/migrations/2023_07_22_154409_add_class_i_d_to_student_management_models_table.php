@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('student_management_models', function (Blueprint $table) {
-            $table->integer('classID')->default(0);
+            $table->integer('classID');
         });
     }
 

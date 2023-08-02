@@ -3,6 +3,8 @@
 use App\Http\Controllers\classesManagementController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\StudentManagementModelController;
+use App\Http\Controllers\SubjectManageController;
+use App\Http\Controllers\teacher;
 use App\Http\Controllers\UserManagmentController;
 use Illuminate\Support\Facades\Route;
 
@@ -62,7 +64,11 @@ Route::get('/getCurrentTeacher/{id}',[classesManagementController::class,'GetCur
 Route::get('/assignedOrNot/{selected}',[classesManagementController::class,'AssignedOrNot']);
 Route::put('/removeClassTeacher/{classID}',[classesManagementController::class,'RemoveClassTeacher']);
 
-
+//manage subjects
+Route::get('/subject',[SubjectManageController::class,'index']);
+Route::post('/saveSubject',[SubjectManageController::class,'SaveSubject']);
+Route::get('/viewSubjects',[SubjectManageController::class,'ViewSubjects']);
+Route::delete('/deleteSubject/{id}',[SubjectManageController::class,'DeleteSubject']);
 
 
 
@@ -71,3 +77,5 @@ Route::put('/removeClassTeacher/{classID}',[classesManagementController::class,'
 Route::get('/teacher', function () {
     return view('Teacher.dashboard');
 });
+Route::get('/studentsList/{id}',[teacher::class,'Students']);
+// Route::get('/getStudentsList/{teacherID}',[teacher::class,'GetStudentsList']);

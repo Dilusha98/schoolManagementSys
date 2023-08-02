@@ -17,6 +17,22 @@
 </head>
 
 <body>
+  @php
+    use Illuminate\Support\Facades\DB;
+@endphp
+@php
+    $name = session()->get('name');
+    // $data = DB::table('userregistation')->get();
+    $data = session()->get('user');
+    $dataarray = json_decode($data, true);
+    // print_r($dataarray);
+@endphp
+@if ($name != 'teacher')
+    @php
+        header('Location: ' . URL::to('/'), true, 302);
+        exit();
+    @endphp
+@endif
   <!--  Body Wrapper -->
   <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
@@ -41,7 +57,7 @@
               <span class="hide-menu">Home</span>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/admin" aria-expanded="false">
+              <a class="sidebar-link" href="/teacher" aria-expanded="false">
                 <span>
                   <i class="ti ti-layout-dashboard"></i>
                 </span>
@@ -53,11 +69,11 @@
               <span class="hide-menu">School</span>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/userManagment" aria-expanded="false">
+              <a class="sidebar-link" href="/studentsList/{{$dataarray['id']}}" aria-expanded="false">
                 <span>
                   <i class="ti ti-article"></i>
                 </span>
-                <span class="hide-menu">Student Reports</span>
+                <span class="hide-menu">Students list</span>
               </a>
             </li>
             <li class="sidebar-item">
@@ -190,6 +206,8 @@
       <div class="container-fluid">
 
         @yield('content')
+
+        <input type="text" id="teacherID" value="{{ $dataarray['id'] }}" hidden>
         
         <div class="py-6 px-6 text-center">
           <p class="mb-0 fs-4">Design and Developed by <a href="" target="_blank" class="pe-1 text-primary text-decoration-underline">Logix</a></p>
@@ -210,6 +228,25 @@
     {{-- data table --}}
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        
+        // $(document).on('click','#studentsListA',function (e) {
+        //   e.preventDefault();
+        //     let id = $('#teacherID').val();
+
+        //     $.ajax({
+        //       type: "get",
+        //       url: "/studentsList/"+id,
+        //       success: function (response) {
+                
+        //       }
+        //     });
+        // });
+
+      });
+    </script>
 
 </body>
 
