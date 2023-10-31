@@ -10,10 +10,15 @@
   </title>
   <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
   <link rel="stylesheet" href="../assets/css/styles.min.css" />
+  {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> --}}
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.1.1/css/buttons.dataTables.min.css">
 
   {{-- data table --}}
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+  {{-- chart JS --}}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -77,19 +82,19 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="./ui-alerts.html" aria-expanded="false">
+              <a class="sidebar-link" href="/marks/{{$dataarray['id']}}" aria-expanded="false">
                 <span>
                   <i class="ti ti-alert-circle"></i>
                 </span>
-                <span class="hide-menu">Reports</span>
+                <span class="hide-menu">Marks</span>
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" href="/manageStudents" aria-expanded="false">
+              <a class="sidebar-link" href="/reports-teacher/{{$dataarray['id']}}" aria-expanded="false">
                 <span>
                   <i class="ti ti-cards"></i>
                 </span>
-                <span class="hide-menu">Manage Students</span>
+                <span class="hide-menu">Reports</span>
               </a>
             </li>
             <li class="sidebar-item">
@@ -222,6 +227,8 @@
   <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
   <script src="../assets/js/dashboard.js"></script>
+  
+
 
   @yield('script')
 
@@ -229,25 +236,14 @@
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
-    <script>
-      $(document).ready(function () {
-        
-        // $(document).on('click','#studentsListA',function (e) {
-        //   e.preventDefault();
-        //     let id = $('#teacherID').val();
-
-        //     $.ajax({
-        //       type: "get",
-        //       url: "/studentsList/"+id,
-        //       success: function (response) {
-                
-        //       }
-        //     });
-        // });
-
-      });
-    </script>
-
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.1.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.print.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
 </body>
 
 </html>

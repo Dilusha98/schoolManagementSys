@@ -18,4 +18,12 @@ class teacher extends Controller
         ->get();
         return view('Teacher.studentsList',compact('studentLists'));
     }
+
+    public function StudentDetails($id){
+        $studentDetails = DB::table('student_management_models')
+        ->select('*')
+        ->where('id',$id)
+        ->get();
+        return $studentDetails;
+    }
 }

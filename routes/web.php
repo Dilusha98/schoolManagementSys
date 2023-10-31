@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\AdashBoard;
 use App\Http\Controllers\classesManagementController;
 use App\Http\Controllers\loginController;
+use App\Http\Controllers\marksController;
+use App\Http\Controllers\report;
 use App\Http\Controllers\StudentManagementModelController;
 use App\Http\Controllers\SubjectManageController;
+use App\Http\Controllers\Tdashboard;
 use App\Http\Controllers\teacher;
 use App\Http\Controllers\UserManagmentController;
 use Illuminate\Support\Facades\Route;
@@ -15,11 +19,13 @@ Route::get('/', function () {
 // login
 Route::get('/checkUnAndPw',[loginController::class,'index']);
 
-
 // admin Dashboard
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-});
+Route::get('/admin',[AdashBoard::class,'index']);
+Route::get('/getAvgBarChartAdminSide/{sem}/{grade}',[AdashBoard::class,'generateAvgBarChart']);
+Route::get('/viewlinechanrt/{grade}',[AdashBoard::class,'Viewlinechanrt']);
+Route::get('/getAvgCountPieChartAdminSide/{grade}/{semester}',[AdashBoard::class,'getAvgCountPieChartAdminSide']);
+
+
 
 
 // User Managment
@@ -73,9 +79,14 @@ Route::delete('/deleteSubject/{id}',[SubjectManageController::class,'DeleteSubje
 
 
 // Teacher Dashboard
-
-Route::get('/teacher', function () {
-    return view('Teacher.dashboard');
-});
+Route::get('/teacher',[Tdashboard::class,'index']);
 Route::get('/studentsList/{id}',[teacher::class,'Students']);
-// Route::get('/getStudentsList/{teacherID}',[teacher::class,'GetStudentsList']);
+Route::get('/studentDetails/{id}',[teacher::class,'StudentDetails']);
+Route::get('/marks/{id}',[marksController::class,'index']);
+Route::post('/savesemOneMarks',[marksController::class,'savesemOneMarks']);
+Route::get('/getSemOneMarksToEdit',[marksController::class,'GetSemOneMarksEdit']);
+Route::get('/reports-teacher/{id}',[report::class,'index']);
+Route::get('/generateReport/{sem}/{id}',[report::class,'generateReport']);
+Route::get('/getAvgBarChart/{sem}',[Tdashboard::class,'generateAvgBarChart']);
+Route::get('/getAvgCountPieChart/{sem}',[Tdashboard::class,'generateAvgCountPieChart']);
+Route::get('/getstudentAllMarks/{id}',[Tdashboard::class,'lineCart']);
