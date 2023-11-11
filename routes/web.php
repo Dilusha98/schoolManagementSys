@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdashBoard;
+use App\Http\Controllers\Adminreports;
 use App\Http\Controllers\classesManagementController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\marksController;
@@ -24,6 +25,7 @@ Route::get('/admin',[AdashBoard::class,'index']);
 Route::get('/getAvgBarChartAdminSide/{sem}/{grade}',[AdashBoard::class,'generateAvgBarChart']);
 Route::get('/viewlinechanrt/{grade}',[AdashBoard::class,'Viewlinechanrt']);
 Route::get('/getAvgCountPieChartAdminSide/{grade}/{semester}',[AdashBoard::class,'getAvgCountPieChartAdminSide']);
+Route::get('/reports',[Adminreports::class,'index']);
 
 
 
