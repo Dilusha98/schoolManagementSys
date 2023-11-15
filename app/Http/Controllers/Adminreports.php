@@ -11,7 +11,7 @@ class Adminreports extends Controller
     public function index()
     {
         $subjectReport = $this->getSubjectReport();
-        $studentAvgReport = $this->getStudentAvgReport();
+        $studentAvgReport = $this->getStudentAvgReport(date("Y"),5,50,75);
 
         $subjects = SubjectManage::select('subject', 'id')->get();
 
@@ -43,13 +43,8 @@ class Adminreports extends Controller
         return $data;
     }
 
-    public function getStudentAvgReport()
+    public function getStudentAvgReport($currentYear,$subjectID,$from,$to)
     {
-        $currentYear = date("Y");
-        $subjectID = 6;
-        $from = '20';
-        $to = '25';
-    
         $students = DB::table('student_management_models')
             ->join('marks', 'student_management_models.id', '=', 'marks.studentID')
             ->join('studentclass', 'student_management_models.classID', '=', 'studentclass.id')
@@ -69,6 +64,36 @@ class Adminreports extends Controller
             ->get();
     
         return $students;
+    }
+
+    public function getstudentWiseAjax(Request $request)
+    {
+        $year = $request->input('year');
+        $subjects = $request->input('subjects');
+        $from = $request->input('from');
+        $to = $request->input('to');
+
+        if ($year == null) {
+            $year = date("Y");
+        }
+        if ($subjects == null) {
+            $subjects = 5;
+        }
+        if ($from == null && $to == null) {
+            $from = 50;
+            $to = 75;
+        }
+        if ($from == null) {
+            $from = 50;
+        }
+        if ($to == null) {
+            $to = 100;
+        }
+
+        $studentAvgReport = $this->getStudentAvgReport($year,$subjects,$from,$to);
+
+        return $studentAvgReport;
+
     }
     
     

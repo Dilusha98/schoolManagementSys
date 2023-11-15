@@ -20,54 +20,136 @@
     Admin Dashboard
 @endsection
 
+@section('styles')
+    <link rel="stylesheet" href="{{ url('assets/custom-css/dashboard_custom.css') }}">
+@endsection
+
 @section('content')
-    <h1>Admin</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card" style="height:600px;">
+                <div class="card-header text-center" style="background-color: rgba(52, 152, 219, 0.2); color: #333; border-radius: 10px;">
+                    <h3>Averages for subjects in grades (Current Year)</h3>
+                </div>                
+                
+                    <div class="row mb-5">
+                    <div class="col-md-6 switch-container">
+                        <input type="radio" id="semOne" name="semSelect" value="1" checked class="chart-input">
+                        <label for="semOne" class="switch-label"><span>01</span></label>
+                    
+                        <input type="radio" id="semTwo" name="semSelect" value="2" class="chart-input">
+                        <label for="semTwo" class="switch-label"><span>02</span></label>
+                    
+                        <input type="radio" id="semThree" name="semSelect" value="3" class="chart-input">
+                        <label for="semThree" class="switch-label"><span>03</span></label>
+                    </div>
+                    
+                    
+                    
+                    <div class="col-md-5">
+                        <label for="selectGrade">Select Grade</label>
+                        <select name="selectGrade" id="selectGrade" class="form-select chart-input">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8" selected>8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                        </select>
+                    </div>
+                </div>
+                {{-- Bar chart --}}
+                <div id="chart-container" style="position: relative;">
+                    <div id="no-data-message"
+                        style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                        No data available
+                    </div>
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+
+                <div class="row">
+                    <div class="card cardc">
+                        <div class="row">
+                            <div class="col-md-4 text-center clock-column">
+                                <div class="clock-icon">
+                                    <i class="fa fa-clock fa-lg" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <h2 class="section-title">Date and Time</h2>
+                                <h5 id="date" class="date-time">{{ now()->format('Y-m-d') }}</h5>
+                                <p id="dateTime" class="date-time"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+                <!-- Academic Staff Section -->
+                <div class="row">
+                    <div class="card cardc">
+                        <div class="row">
+                            <div class="col-md-4 text-center staff-column">
+                                <p class="staff-icon"><i class="fa fa-users fa-lg" aria-hidden="true"></i></p>
+                            </div>
+                            <div class="col-md-8">
+                                <h3 class="section-title">Academic Staff</h3>
+                                <h1 class="total-count">{{$totalTeachers}}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Students Section -->
+                <div class="row">
+                    <div class="card cardc">
+                        <div class="row">
+                            <div class="col-md-4 text-center student-column">
+                                <p class="student-icon"><i class="fa-solid fa-graduation-cap"></i></p>
+                            </div>
+                            <div class="col-md-8">
+                                <h3 class="section-title">Total Students</h3>
+                                <h1 class="total-count">{{$totalStudents}}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    {{-- Pie Chart --}}
     <div class="card">
+        <div class="card-header text-center" style="background-color: rgba(52, 152, 219, 0.2); color: #333; border-radius: 10px;">
+            <h3>Students count in averages (Current Year)</h3>
+        </div>
         <div class="row">
-            <div class="col-md-6">
-                <input type="radio" id="semOne" name="semSelect" value="1" checked class="chart-input">
-                <label for="semOne">Semester One</label>
-                <input type="radio" id="semTwo" name="semSelect" value="2" class="chart-input">
-                <label for="semTwo">Semester Two</label>
-                <input type="radio" id="semThree" name="semSelect" value="3" class="chart-input">
-                <label for="semThree">Semester Three</label>
-            </div>
-            <div class="col-md-6">
-                <label for="selectGrade">Select Grade</label>
-                <select name="selectGrade" id="selectGrade" class="form-select chart-input">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8" selected>8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    {{-- Bar chart --}}
-    <div id="chart-container" style="position: relative;">
-        <div id="no-data-message"
-            style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-            No data available
-        </div>
-        <canvas id="barChart"></canvas>
-    </div>
-        {{-- Pie Chart --}}
-        <div>
             <canvas id="pieChartCanvas"></canvas>
         </div>
-        {{-- line chart --}}
-    <div>
+    </div>
+
+
+    {{-- line chart --}}
+    <div class="card">
+        <div class="card-header text-center" style="background-color: rgba(52, 152, 219, 0.2); color: #333; border-radius: 10px;">
+            <h3>Compare current year and previous year</h3>
+        </div>
         <div class="row">
-            <div class="col-md-6">
+            <div align="right">
                 <label for="selectGradeInLineChart">Select Grade</label>
                 <select name="selectGrade" id="selectGradeInLineChart" class="form-select">
                     <option value="1">1</option>
@@ -230,7 +312,7 @@
                                 label: 'Previous Year',
                                 borderColor: 'rgba(255, 99, 132, 1)',
                                 data: previousYearData.map(data => data.AverageMarks),
-                            }
+                            },
                         ],
                     },
                     options: {
@@ -243,8 +325,33 @@
                                 },
                             },
                         },
+                        plugins: {
+                            tooltip: {
+                                enabled: false, // Disable default tooltip
+                                position: 'nearest',
+                                external: externalTooltipHandler,
+                            },
+                        },
                     },
                 });
+            }
+
+            function externalTooltipHandler(context) {
+                // Tooltip Content
+                const content = context.chart.data.labels.map((label, index) => {
+                    const currentYearValue = currentYearData[index].AverageMarks;
+                    const previousYearValue = previousYearData[index].AverageMarks;
+                    return `${label}: ${currentYearValue} (Current), ${previousYearValue} (Previous)`;
+                }).join('\n');
+
+                // Tooltip Position
+                const { x, y } = context.chart.getDatasetMeta(0).data[context.dataIndex].getProps(['x', 'y']);
+
+                // Show Tooltip
+                const tooltip = document.querySelector('.tooltip');
+                tooltip.innerHTML = content;
+                tooltip.style.left = x + 'px';
+                tooltip.style.top = y + 'px';
             }
 
             $(document).on('change', '#selectGradeInLineChart', function(e) {
@@ -279,7 +386,6 @@
                             }
                         });
 
-                        // const ctx = document.getElementById('marksLineChart').getContext('2d');
 
                         var ctx = $('#marksLineChart');
 
@@ -294,15 +400,13 @@
                                 datasets: [{
                                         label: 'Current Year',
                                         borderColor: 'rgba(75, 192, 192, 1)',
-                                        data: currentYearData.map(data => data
-                                            .AverageMarks),
+                                        data: currentYearData.map(data => data.AverageMarks),
                                     },
                                     {
                                         label: 'Previous Year',
                                         borderColor: 'rgba(255, 99, 132, 1)',
-                                        data: previousYearData.map(data => data
-                                            .AverageMarks),
-                                    }
+                                        data: previousYearData.map(data => data.AverageMarks),
+                                    },
                                 ],
                             },
                             options: {
@@ -313,6 +417,13 @@
                                             display: true,
                                             text: 'Average Marks',
                                         },
+                                    },
+                                },
+                                plugins: {
+                                    tooltip: {
+                                        enabled: false, 
+                                        position: 'nearest',
+                                        external: externalTooltipHandler,
                                     },
                                 },
                             },
@@ -432,6 +543,17 @@
                     }
                 });
             }
+
+        // Function to update the date and time every second
+        function updateDateTime() {
+            var dateTimeElement = document.getElementById("dateTime");
+            var currentDate = new Date();
+            var formattedTime = currentDate.toLocaleTimeString();
+
+            dateTimeElement.textContent = formattedTime;
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
 
         });
     </script>

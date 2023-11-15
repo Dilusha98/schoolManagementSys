@@ -26,6 +26,7 @@ Route::get('/getAvgBarChartAdminSide/{sem}/{grade}',[AdashBoard::class,'generate
 Route::get('/viewlinechanrt/{grade}',[AdashBoard::class,'Viewlinechanrt']);
 Route::get('/getAvgCountPieChartAdminSide/{grade}/{semester}',[AdashBoard::class,'getAvgCountPieChartAdminSide']);
 Route::get('/reports',[Adminreports::class,'index']);
+Route::get('/getDataToStudentWiseReport',[Adminreports::class,'getstudentWiseAjax']);
 
 
 

@@ -1,0 +1,46 @@
+body {
+    background: url('your-background-image.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    max-width: 400px;
+    height: 450px;
+    width: 100%;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.login-container:hover {
+    transform: scale(1.02);
+}
+
+h1 {
+    text-align: center;
+    color: #34495e;
+}
+
+
+#LoginBtn {
+    width: 150px;
+    height: 40px;
+    background-color: #3498db;
+    font-size: 18px;
+    font-style: bold;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#LoginBtn:hover {
+    background-color: #2980b9;
+}
+

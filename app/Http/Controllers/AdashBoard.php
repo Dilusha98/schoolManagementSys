@@ -111,7 +111,10 @@ class AdashBoard extends Controller
             'Above 90' => $Avg90plus,
         ];
 
-        return view('admin.dashboard',compact('marks','previousYearMarks', 'counts'));
+        $totalTeachers = DB::table('user_managments')->count();
+        $totalStudents = DB::table('student_management_models')->count();
+
+        return view('admin.dashboard',compact('marks','previousYearMarks', 'counts','totalTeachers','totalStudents'));
     }
 
     public function generateAvgBarChart($sem,$grade)
