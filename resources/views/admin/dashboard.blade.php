@@ -32,22 +32,24 @@
                     <h3>Averages for subjects in grades (Current Year)</h3>
                 </div>                
                 
-                    <div class="row mb-5">
-                    <div class="col-md-6 switch-container">
-                        <input type="radio" id="semOne" name="semSelect" value="1" checked class="chart-input">
-                        <label for="semOne" class="switch-label"><span>01</span></label>
+                    <div class="row mb-3 mt-3"> 
+                    <div class="col-md-7 switch-container">
+                        <div class="col-md-6 switch-container" style="height: 35px">
+                            <input type="radio" id="semOne" name="semSelect" value="1" checked class="chart-input">
+                            <label for="semOne" class="switch-label">Sem 1</label>
                     
-                        <input type="radio" id="semTwo" name="semSelect" value="2" class="chart-input">
-                        <label for="semTwo" class="switch-label"><span>02</span></label>
+                            <input type="radio" id="semTwo" name="semSelect" value="2" class="chart-input">
+                            <label for="semTwo" class="switch-label">Sem 2</label>
                     
-                        <input type="radio" id="semThree" name="semSelect" value="3" class="chart-input">
-                        <label for="semThree" class="switch-label"><span>03</span></label>
+                            <input type="radio" id="semThree" name="semSelect" value="3" class="chart-input">
+                            <label for="semThree" class="switch-label">Sem 3</label>
+                        </div>
                     </div>
                     
                     
                     
                     <div class="col-md-5">
-                        <label for="selectGrade">Select Grade</label>
+                        {{-- <label for="selectGrade">Select Grade</label> --}}
                         <select name="selectGrade" id="selectGrade" class="form-select chart-input">
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -135,7 +137,7 @@
     {{-- Pie Chart --}}
     <div class="card">
         <div class="card-header text-center" style="background-color: rgba(52, 152, 219, 0.2); color: #333; border-radius: 10px;">
-            <h3>Students count in averages (Current Year)</h3>
+            <h3>Students count in averages</h3>
         </div>
         <div class="row">
             <canvas id="pieChartCanvas"></canvas>

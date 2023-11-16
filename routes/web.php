@@ -19,6 +19,8 @@ Route::get('/', function () {
 
 // login
 Route::get('/checkUnAndPw',[loginController::class,'index']);
+// logout
+Route::get('/logout',[loginController::class,'logout']);
 
 // admin Dashboard
 Route::get('/admin',[AdashBoard::class,'index']);

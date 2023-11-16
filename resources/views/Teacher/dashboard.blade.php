@@ -16,55 +16,142 @@
 
 @extends('Teacher.Tlayout')
 
-<style>
-    #barChart {
-        width: 500px !important;
-        height: 400px !important;
-    }
-</style>
-
 @section('title')
     Teacher Dashboard
 @endsection
 
+@section('styles')
+    <link rel="stylesheet" href="{{ url('assets/custom-css/teacherDashboard_custom_css.css') }}">
+@endsection
+
 @section('content')
-    <h1>Teacher</h1>
-    <div class="card">
-        <input type="radio" id="semOne" name="semSelect" value="1" checked>
-        <label for="semOne">Semester One</label>
-        <input type="radio" id="semTwo" name="semSelect" value="2">
-        <label for="semTwo">Semester Two</label>
-        <input type="radio" id="semThree" name="semSelect" value="3">
-        <label for="semThree">Semester Three</label>
-    </div>
-    {{-- Bar chart --}}
-    <div id="chart-container" style="position: relative;">
-        <div id="no-data-message"
-            style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-            No data available
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header text-center" style="background-color: rgba(52, 152, 219, 0.2); color: #333; border-radius: 10px;">
+                <h3>Averages marks of the class</h3>
+            </div> 
+
+            <div class="row" style="justify-content: flex-end; margin-right:10px;">
+                <div class="row switch-container mt-3" style="width: 220px;">
+                    <input type="radio" id="semOne" name="semSelect" value="1" checked>
+                    <label for="semOne" class="switch-label">Sem 1</label>
+                
+                    <input type="radio" id="semTwo" name="semSelect" value="2">
+                    <label for="semTwo" class="switch-label">Sem 2</label>
+                
+                    <input type="radio" id="semThree" name="semSelect" value="3">
+                    <label for="semThree" class="switch-label">Sem 3</label>
+                </div>
+            </div>   
+            
+            <div class="row">
+                {{-- Bar chart --}}
+                <div id="chart-container" style="position: relative;">
+                    <div id="no-data-message"
+                        style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                        No data available
+                    </div>
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+
         </div>
-        <canvas id="barChart"></canvas>
     </div>
-    {{-- Pie Chart --}}
-    <div>
+    <div class="col-md-4">
+        <div class="row">
+
+            <div class="row">
+                <div class="card cardc">
+                    <div class="row">
+                        <div class="col-md-4 text-center clock-column">
+                            <div class="clock-icon">
+                                <i class="fa fa-clock fa-lg" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h2 class="section-title">Date and Time</h2>
+                            <h5 id="date" class="date-time">{{ now()->format('Y-m-d') }}</h5>
+                            <p id="dateTime" class="date-time"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <!-- Academic Staff Section -->
+            <div class="row">
+                <div class="card cardc">
+                    <div class="row">
+                        <div class="col-md-4 text-center staff-column">
+                            <p class="staff-icon"><i class="fa fa-users fa-lg" aria-hidden="true"></i></p>
+                        </div>
+                        <div class="col-md-8">
+                            <h3 class="section-title">Academic Staff</h3>
+                            <h1 class="total-count">1</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Students Section -->
+            <div class="row">
+                <div class="card cardc">
+                    <div class="row">
+                        <div class="col-md-4 text-center student-column">
+                            <p class="student-icon"><i class="fa-solid fa-graduation-cap"></i></p>
+                        </div>
+                        <div class="col-md-8">
+                            <h3 class="section-title">Total Students</h3>
+                            <h1 class="total-count">55</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+{{-- Pie Chart --}}
+<div class="card">
+    <div class="card-header text-center" style="background-color: rgba(52, 152, 219, 0.2); color: #333; border-radius: 10px;">
+        <h3>Students count in averages (Current Year)</h3>
+    </div>
+    <div class="row">
         <canvas id="pieChartCanvas"></canvas>
     </div>
+</div>
+
+
     {{-- line Chart --}}
-    <div class="">
-        <div>
-            <label for="select_student">Studentt</label>
-            <select name="select_student" id="select_student" class="form-select form-select-sm">
-                <option value="">- Select Student -</option>
-                @foreach ($stList as $item)
-                    <option value="{{ $item->id }}">{{ $item->studentFullName }}</option>
-                @endforeach
-            </select>
+    <div class="card">
+        <div class="card-header text-center" style="background-color: rgba(52, 152, 219, 0.2); color: #333; border-radius: 10px;">
+            <h3>Compare sutudents semester wise</h3>
+        </div>
+        <div class="row mb-3 mt-3" align="right">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <select name="select_student" id="select_student" class="form-select form-select-sm">
+                    <option value="">- Select Student -</option>
+                    @foreach ($stList as $item)
+                        <option value="{{ $item->id }}">{{ $item->studentFullName }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
         <canvas id="marksChart" width="400" height="200"></canvas>
     </div>
 @endsection
 
 @section('script')
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+
     <script>
         $(document).ready(function() {
 
@@ -403,6 +490,18 @@
                 });
 
             });
+
+        // Function to update the date and time every second
+        function updateDateTime() {
+            var dateTimeElement = document.getElementById("dateTime");
+            var currentDate = new Date();
+            var formattedTime = currentDate.toLocaleTimeString();
+
+            dateTimeElement.textContent = formattedTime;
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+
         });
     </script>
 @endsection
