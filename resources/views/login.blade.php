@@ -17,7 +17,7 @@
         <div class="col-md-5">
             <div class="login-container">
                 <div class="alert alert-danger" id="errorMessage" role="alert" style="display: none"></div>
-    
+
                 <h1 class="mb-4">Login</h1>
                 <form>
                     <div class="form-group mb-3">
@@ -53,9 +53,9 @@
             </div>
         </div>
     </div>
-    
-    
-    
+
+
+
 
 
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
@@ -76,11 +76,10 @@
                 });
 
                 $.ajax({
-                    type: "get",
+                    type: "post",
                     url: "/checkUnAndPw",
                     data: data,
                     success: function (res) {
-                        console.log(res);
                         if (res == 1) {
                             window.location = "/admin";
                         }else if (res == 2) {

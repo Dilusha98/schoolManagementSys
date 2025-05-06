@@ -15,10 +15,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('login');
-});
+})->name('login');
 
 // login
-Route::get('/checkUnAndPw',[loginController::class,'index']);
+Route::post('/checkUnAndPw',[loginController::class,'index']);
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+
 // logout
 Route::get('/logout',[loginController::class,'logout']);
 
@@ -31,12 +34,10 @@ Route::get('/reports',[Adminreports::class,'index']);
 Route::get('/getDataToStudentWiseReport',[Adminreports::class,'getstudentWiseAjax']);
 
 
-
-
+Route::get('/viewUserList',[UserManagmentController::class,'ViewUserList'])->name('viewUserList');
 // User Managment
 Route::get('/userManagment',[UserManagmentController::class,'index']);
 Route::post('/saveUser',[UserManagmentController::class,'saveUser']);
-Route::get('/viewUserList',[UserManagmentController::class,'ViewUserList'])->name('viewUserList');
 Route::delete('/deleteUser/{id}',[UserManagmentController::class,'DeleteUser'])->name('deleteUser');
 Route::get('/viewUserListToEdit/{id}',[UserManagmentController::class,'ViewUserListToEdit'])->name('viewUserListToEdit');
 Route::put('/updateUserDetails/{id}',[UserManagmentController::class,'UpdateUserDetails'])->name('updateUserDetails');
@@ -95,3 +96,5 @@ Route::get('/generateReport/{sem}/{id}',[report::class,'generateReport']);
 Route::get('/getAvgBarChart/{sem}',[Tdashboard::class,'generateAvgBarChart']);
 Route::get('/getAvgCountPieChart/{sem}',[Tdashboard::class,'generateAvgCountPieChart']);
 Route::get('/getstudentAllMarks/{id}',[Tdashboard::class,'lineCart']);
+
+});
